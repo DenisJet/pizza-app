@@ -59,3 +59,8 @@
   font-size: 14px;
   color: #9ea1b1;
 }
+
+.content {
+  padding: 40px 60px;
+  width: 100%;
+}
