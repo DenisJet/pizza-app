@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import Button from './components/Button/Button';
+import Input from './components/Input/Input';
+import { Route, Routes } from 'react-router-dom';
+import { Menu } from './pages/Menu/Menu';
+import { Cart } from './pages/Cart/Cart';
+import { Error } from './pages/Error/Error';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [counter, setCounter] = useState<number>(0);
+
+  const addCounter = (e: MouseEvent) => {
+    console.log(e);
+  };
 
   return (
     <>
+      <Button onClick={addCounter}>Button</Button>
+      <Button appearence='big' onClick={addCounter}>
+        Button
+      </Button>
+      <Input placeholder='Email' />
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <a href='/'>Menu</a>
+        <a href='/cart'>Cart</a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Routes>
+        <Route path='/' element={<Menu />} />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='*' element={<Error />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
