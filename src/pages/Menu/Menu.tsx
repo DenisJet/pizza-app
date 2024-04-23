@@ -40,7 +40,7 @@ export function Menu() {
             key={product.id}
             id={product.id}
             name={product.name}
-            description={product.description}
+            description={product.ingredients.join(', ')}
             rating={product.rating}
             price={product.price}
             image={product.image}
