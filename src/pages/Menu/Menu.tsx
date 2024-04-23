@@ -9,24 +9,23 @@ import styles from './Menu.module.css';
 export function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const getMenu = async () => {
-    try {
-      const res = await fetch(`${PREFIX}/products`);
-      if (!res.ok) {
+  useEffect(() => {
+    const getMenu = async () => {
+      try {
+        const res = await fetch(`${PREFIX}/products`);
+        if (!res.ok) {
+          return;
+        }
+        const data = (await res.json()) as Product[];
+        setProducts(data);
+        console.log(products);
+      } catch (error) {
+        console.error(error);
         return;
       }
-      const data = (await res.json()) as Product[];
-      setProducts(data);
-      console.log(products);
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  };
-
-  useEffect(() => {
+    };
     getMenu();
-  }, []);
+  }, [products]);
 
   return (
     <>
