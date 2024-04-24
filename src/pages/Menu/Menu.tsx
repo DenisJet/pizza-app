@@ -7,7 +7,7 @@ import styles from './Menu.module.css';
 import axios, { AxiosError } from 'axios';
 import { MenuList } from './MenuList/MenuList';
 
-export function Menu() {
+export default function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
