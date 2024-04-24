@@ -5,11 +5,12 @@ import Search from '../../components/Search/Search';
 import { PREFIX } from '../../helpers/API';
 import { Product } from '../../interfaces/product.interface';
 import styles from './Menu.module.css';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
     const getMenu = async () => {
@@ -20,11 +21,14 @@ export function Menu() {
             resolve();
           }, 2000);
         });
-        const { data } = await axios.get<Product[]>(`${PREFIX}/products`);
+        const { data } = await axios.get<Product[]>(`${PREFIX}/productss`);
         setProducts(data);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
+        if (error instanceof AxiosError) {
+          setError(error.message);
+        }
         setIsLoading(false);
         return;
       }
@@ -39,6 +43,7 @@ export function Menu() {
         <Search placeholder='Введите блюдо или состав' />
       </div>
       <div>
+        {error && <>{error}</>}
         {!isLoading &&
           products.map((product) => (
             <ProductCard
