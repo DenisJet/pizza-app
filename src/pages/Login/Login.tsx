@@ -11,16 +11,16 @@ export function Login() {
   };
 
   return (
-    <div className={styles['login']} onSubmit={submit}>
+    <div className={styles['login']}>
       <Headling>Вход</Headling>
-      <form className={styles['form']}>
+      <form className={styles['form']} onSubmit={submit}>
         <div className={styles['field']}>
           <label htmlFor='email'>Ваш email</label>
-          <input id='email' type='text' placeholder='Email' />
+          <input id='email' name='email' type='text' placeholder='Email' />
         </div>
         <div className={styles['field']}>
           <label htmlFor='password'>Ваш пароль</label>
-          <input id='password' type='password' placeholder='Пароль' />
+          <input id='password' name='password' type='password' placeholder='Пароль' />
         </div>
         <Button appearence='big'>Вход</Button>
       </form>
