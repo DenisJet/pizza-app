@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { loadState } from './storage';
 import { LoginResponse } from '../interfaces/auth.interface';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { PREFIX } from '../helpers/API';
 
 export const JWT_PERSISTENT_STATE = 'userData';
@@ -12,20 +12,25 @@ export interface UserPersistentState {
 
 export interface UserState {
   jwt: string | null;
-  loginState: null | 'rejected';
+  loginErrorMessage?: string;
 }
 
 const initialState: UserState = {
-  jwt: loadState(JWT_PERSISTENT_STATE) ?? null,
-  loginState: null,
+  jwt: loadState<UserPersistentState>(JWT_PERSISTENT_STATE)?.jwt ?? null,
 };
 
 export const login = createAsyncThunk('user/login', async (params: { email: string; password: string }) => {
-  const { data } = await axios.post<LoginResponse>(`${PREFIX}/auth`, {
-    email: params.email,
-    password: params.password,
-  });
-  return data;
+  try {
+    const { data } = await axios.post<LoginResponse>(`${PREFIX}/auth`, {
+      email: params.email,
+      password: params.password,
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    }
+  }
 });
 
 export const userSlice = createSlice({
@@ -35,13 +40,19 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.jwt = null;
     },
+    clearLoginError: (state) => {
+      state.loginErrorMessage = undefined;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+    builder.addCase(login.fulfilled, (state, action) => {
+      if (!action.payload) {
+        return;
+      }
       state.jwt = action.payload.token;
     });
-    builder.addCase(login.rejected, (state, error) => {
-      console.log(error);
+    builder.addCase(login.rejected, (state, action) => {
+      state.loginErrorMessage = action.error.message;
     });
   },
 });
