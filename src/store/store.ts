@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userSlice, { JWT_PERSISTENT_STATE } from './user.slice';
+import userSlice, { USER_PERSISTENT_STATE } from './user.slice';
 import { saveState } from './storage';
 import cartSlice from './cart.slice';
 
@@ -11,7 +11,15 @@ export const store = configureStore({
 });
 
 store.subscribe(() => {
-  saveState({ jwt: store.getState().user.jwt }, JWT_PERSISTENT_STATE);
+  saveState(
+    {
+      jwt: store.getState().user.jwt,
+      id: store.getState().user.id,
+      email: store.getState().user.email,
+      name: store.getState().user.name,
+    },
+    USER_PERSISTENT_STATE
+  );
 });
 
 export type RootState = ReturnType<typeof store.getState>;

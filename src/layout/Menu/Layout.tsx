@@ -9,7 +9,8 @@ import { userActions } from '../../store/user.slice';
 export function Layout() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const profile = useSelector((state: RootState) => state.user.profile);
+  const email = useSelector((state: RootState) => state.user.email);
+  const name = useSelector((state: RootState) => state.user.name);
   const items = useSelector((state: RootState) => state.cart.items);
 
   const logout = () => {
@@ -22,8 +23,8 @@ export function Layout() {
       <div className={styles['sidebar']}>
         <div className={styles['user']}>
           <img className={styles['avatar']} src='/avatar.png' alt='Аватар пользователя' />
-          <div className={styles['name']}>{profile?.name}</div>
-          <div className={styles['email']}>{profile?.email}</div>
+          <div className={styles['name']}>{name}</div>
+          <div className={styles['email']}>{email}</div>
         </div>
         <div className={styles['menu']}>
           <NavLink

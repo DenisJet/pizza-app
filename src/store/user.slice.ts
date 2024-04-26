@@ -4,25 +4,29 @@ import { LoginResponse } from '../interfaces/auth.interface';
 import axios, { AxiosError } from 'axios';
 import { PREFIX } from '../helpers/API';
 
-export const JWT_PERSISTENT_STATE = 'userData';
+export const USER_PERSISTENT_STATE = 'userData';
 
 export interface UserPersistentState {
   jwt: string | null;
+  id: number | null;
+  email: string | null;
+  name: string | null;
 }
 
 export interface UserState {
   jwt: string | null;
+  id: number | null;
+  email: string | null;
+  name: string | null;
   loginErrorMessage?: string;
   registerErrorMessage?: string;
-  profile?: {
-    id: number;
-    email: string;
-    name: string;
-  };
 }
 
 const initialState: UserState = {
-  jwt: loadState<UserPersistentState>(JWT_PERSISTENT_STATE)?.jwt ?? null,
+  jwt: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.jwt ?? null,
+  id: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.id ?? null,
+  email: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.email ?? null,
+  name: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.name ?? null,
 };
 
 export const login = createAsyncThunk('user/login', async (params: { email: string; password: string }) => {
@@ -63,7 +67,9 @@ export const userSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.jwt = null;
-      state.profile = undefined;
+      state.id = null;
+      state.email = null;
+      state.name = null;
     },
     clearLoginError: (state) => {
       state.loginErrorMessage = undefined;
@@ -78,7 +84,9 @@ export const userSlice = createSlice({
         return;
       }
       state.jwt = action.payload.token;
-      state.profile = action.payload.data;
+      state.id = action.payload.data.id;
+      state.email = action.payload.data.email;
+      state.name = action.payload.data.name;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginErrorMessage = action.error.message;
@@ -89,7 +97,9 @@ export const userSlice = createSlice({
         return;
       }
       state.jwt = action.payload.token;
-      state.profile = action.payload.data;
+      state.id = action.payload.data.id;
+      state.email = action.payload.data.email;
+      state.name = action.payload.data.name;
     });
     builder.addCase(register.rejected, (state, action) => {
       state.registerErrorMessage = action.error.message;
