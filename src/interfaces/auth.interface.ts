@@ -3,5 +3,6 @@ export interface LoginResponse {
   data: {
     id: number;
     email: string;
+    name: string;
   };
 }

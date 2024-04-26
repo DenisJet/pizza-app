@@ -3,8 +3,6 @@ import { loadState } from './storage';
 import { LoginResponse } from '../interfaces/auth.interface';
 import axios, { AxiosError } from 'axios';
 import { PREFIX } from '../helpers/API';
-import { Profile } from '../interfaces/user.interface';
-import { RootState } from './store';
 
 export const JWT_PERSISTENT_STATE = 'userData';
 
@@ -16,7 +14,11 @@ export interface UserState {
   jwt: string | null;
   loginErrorMessage?: string;
   registerErrorMessage?: string;
-  profile?: Profile;
+  profile?: {
+    id: number;
+    email: string;
+    name: string;
+  };
 }
 
 const initialState: UserState = {
@@ -55,25 +57,13 @@ export const register = createAsyncThunk(
   }
 );
 
-export const getProfile = createAsyncThunk<Profile, void, { state: RootState }>(
-  'user/getProfile',
-  async (_, thunkApi) => {
-    const jwt = thunkApi.getState().user.jwt;
-    const { data } = await axios.get<Profile>(`${PREFIX}/user/profile`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    return data;
-  }
-);
-
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     logout: (state) => {
       state.jwt = null;
+      state.profile = undefined;
     },
     clearLoginError: (state) => {
       state.loginErrorMessage = undefined;
@@ -88,13 +78,10 @@ export const userSlice = createSlice({
         return;
       }
       state.jwt = action.payload.token;
+      state.profile = action.payload.data;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginErrorMessage = action.error.message;
-    });
-
-    builder.addCase(getProfile.fulfilled, (state, action) => {
-      state.profile = action.payload;
     });
 
     builder.addCase(register.fulfilled, (state, action) => {
@@ -102,6 +89,7 @@ export const userSlice = createSlice({
         return;
       }
       state.jwt = action.payload.token;
+      state.profile = action.payload.data;
     });
     builder.addCase(register.rejected, (state, action) => {
       state.registerErrorMessage = action.error.message;
