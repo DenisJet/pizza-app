@@ -15,8 +15,6 @@ store.subscribe(() => {
     {
       jwt: store.getState().user.jwt,
       id: store.getState().user.id,
-      email: store.getState().user.email,
-      name: store.getState().user.name,
     },
     USER_PERSISTENT_STATE
   );

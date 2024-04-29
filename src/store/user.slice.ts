@@ -3,30 +3,27 @@ import { loadState } from './storage';
 import { LoginResponse } from '../interfaces/auth.interface';
 import axios, { AxiosError } from 'axios';
 import { PREFIX } from '../helpers/API';
+import { Profile } from '../interfaces/user.interface';
+import { RootState } from './store';
 
 export const USER_PERSISTENT_STATE = 'userData';
 
 export interface UserPersistentState {
   jwt: string | null;
   id: number | null;
-  email: string | null;
-  name: string | null;
 }
 
 export interface UserState {
   jwt: string | null;
   id: number | null;
-  email: string | null;
-  name: string | null;
   loginErrorMessage?: string;
   registerErrorMessage?: string;
+  profile?: Profile;
 }
 
 const initialState: UserState = {
   jwt: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.jwt ?? null,
   id: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.id ?? null,
-  email: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.email ?? null,
-  name: loadState<UserPersistentState>(USER_PERSISTENT_STATE)?.name ?? null,
 };
 
 export const login = createAsyncThunk('user/login', async (params: { email: string; password: string }) => {
@@ -61,6 +58,16 @@ export const register = createAsyncThunk(
   }
 );
 
+export const getProfile = createAsyncThunk<Profile, void, { state: RootState }>(
+  'user/getProfile',
+  async (_, thunkApi) => {
+    const id = thunkApi.getState().user.id;
+    const { data } = await axios.get(`${PREFIX}/users`);
+    const profile = data.find((profile: Profile) => profile.id === id);
+    return profile;
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -68,8 +75,6 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.jwt = null;
       state.id = null;
-      state.email = null;
-      state.name = null;
     },
     clearLoginError: (state) => {
       state.loginErrorMessage = undefined;
@@ -85,8 +90,6 @@ export const userSlice = createSlice({
       }
       state.jwt = action.payload.token;
       state.id = action.payload.data.id;
-      state.email = action.payload.data.email;
-      state.name = action.payload.data.name;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginErrorMessage = action.error.message;
@@ -98,11 +101,13 @@ export const userSlice = createSlice({
       }
       state.jwt = action.payload.token;
       state.id = action.payload.data.id;
-      state.email = action.payload.data.email;
-      state.name = action.payload.data.name;
     });
     builder.addCase(register.rejected, (state, action) => {
       state.registerErrorMessage = action.error.message;
+    });
+
+    builder.addCase(getProfile.fulfilled, (state, action) => {
+      state.profile = action.payload;
     });
   },
 });
