@@ -52,7 +52,7 @@ export function Layout() {
           >
             <img src='/cart-icon.svg' alt='Иконка корзины' />
             Корзина
-            {items.reduce((acc, item) => (acc += item.count), 0)}
+            <span className={styles['cart-count']}>{items.reduce((acc, item) => (acc += item.count), 0)}</span>
           </NavLink>
         </div>
         <Button className={styles['exit']} onClick={logout}>

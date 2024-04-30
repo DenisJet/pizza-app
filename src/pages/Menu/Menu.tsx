@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Headling from '../../components/Headling/Headling';
-import Search from '../../components/Search/Search';
+//import Search from '../../components/Search/Search';
 import { PREFIX } from '../../helpers/API';
 import { Product } from '../../interfaces/product.interface';
 import styles from './Menu.module.css';
@@ -35,7 +35,7 @@ export default function Menu() {
     <>
       <div className={styles['head']}>
         <Headling>Menu</Headling>
-        <Search placeholder='Введите блюдо или состав' />
+        {/* <Search placeholder='Введите блюдо или состав' /> */}
       </div>
       <div>
         {error && <>{error}</>}
