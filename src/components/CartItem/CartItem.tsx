@@ -1,4 +1,4 @@
-import styles from './ProductCard.module.css';
+import styles from './CartItem.module.css';
 import { CartItemProps } from './CartItem.props';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
@@ -7,8 +7,7 @@ import { cartActions } from '../../store/cart.slice';
 function CartItem(props: CartItemProps) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const increase = (e: MouseEvent) => {
-    e.preventDefault();
+  const increase = () => {
     dispatch(cartActions.add(props.id));
   };
 
