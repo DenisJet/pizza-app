@@ -8,6 +8,8 @@ import axios from 'axios';
 import { PREFIX } from '../../helpers/API';
 import styles from './Cart.module.css';
 
+const DELIVERY_FEE = 169;
+
 export function Cart() {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const items = useSelector((state: RootState) => state.cart.items);
@@ -26,6 +28,16 @@ export function Cart() {
     loadAllItems();
   }, [items]);
 
+  const total = items
+    .map((item) => {
+      const product = cartProducts.find((product) => product.id === item.id);
+      if (!product) {
+        return 0;
+      }
+      return item.count * product.price;
+    })
+    .reduce((acc, i) => (acc += i), 0);
+
   return (
     <>
       <Headling className={styles['headling']}>Корзина</Headling>
@@ -36,6 +48,26 @@ export function Cart() {
         }
         return <CartItem count={item.count} {...product} />;
       })}
+      <div className={styles['line']}>
+        <div className={styles['text']}>Стоимость</div>
+        <div className={styles['price']}>
+          {total}&nbsp;<span>₽</span>
+        </div>
+      </div>
+      <hr className={styles['hr']} />
+      <div className={styles['line']}>
+        <div className={styles['text']}>Доставка</div>
+        <div className={styles['price']}>
+          {DELIVERY_FEE}&nbsp;<span>₽</span>
+        </div>
+      </div>
+      <hr className={styles['hr']} />
+      <div className={styles['line']}>
+        <div className={styles['text']}>Итог</div>
+        <div className={styles['price']}>
+          {total + DELIVERY_FEE}&nbsp;<span>₽</span>
+        </div>
+      </div>
     </>
   );
 }

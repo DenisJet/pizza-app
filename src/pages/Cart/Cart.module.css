@@ -1,3 +1,31 @@
 .headling {
   margin-bottom: 40px;
 }
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 0;
+  max-width: 512px;
+}
+
+.line span {
+  color: var(--text-secondary-color);
+  font-size: 14px;
+}
+
+.hr {
+  max-width: 512px;
+  margin: 0;
+  border: 1px solid var(--separator-color);
+}
+
+.text {
+  color: var(--text-color);
+  font-size: 16px; 
+}
+
+.price {
+  color: var(--text-color);
+  font-size: 19px; 
+}
