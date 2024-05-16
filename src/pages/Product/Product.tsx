@@ -13,7 +13,7 @@ export function ProductPage() {
   const data = useLoaderData() as { data: Product };
   const dispatch = useDispatch<AppDispatch>();
 
-  const add = (e: MouseEvent) => {
+  const add = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(cartActions.add(productId));
   };
