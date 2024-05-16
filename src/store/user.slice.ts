@@ -61,10 +61,13 @@ export const register = createAsyncThunk(
 export const getProfile = createAsyncThunk<Profile, void, { state: RootState }>(
   'user/getProfile',
   async (_, thunkApi) => {
-    const id = thunkApi.getState().user.id;
-    const { data } = await axios.get(`${PREFIX}/users`);
-    const profile = data.find((profile: Profile) => profile.id === id);
-    return profile;
+    const jwt = thunkApi.getState().user.jwt;
+    const { data } = await axios.get<Profile>(`${PREFIX}/auth_me`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    return data;
   }
 );
 
