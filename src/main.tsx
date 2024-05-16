@@ -5,7 +5,7 @@ import { createBrowserRouter, defer, RouterProvider } from 'react-router-dom';
 import { Cart } from './pages/Cart/Cart.tsx';
 import { Error as ErrorPage } from './pages/Error/Error.tsx';
 import { Layout } from './layout/Menu/Layout.tsx';
-import { Product } from './pages/Product/Product.tsx';
+import { ProductPage } from './pages/Product/Product.tsx';
 import { PREFIX } from './helpers/API.ts';
 import axios from 'axios';
 import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       { path: '/cart', element: <Cart /> },
       {
         path: '/product/:id',
-        element: <Product />,
+        element: <ProductPage />,
         errorElement: <>Ошибка загрузки</>,
         // loader: async ({ params }) => {
         //   return defer({

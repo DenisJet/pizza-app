@@ -1,8 +1,6 @@
 import { Await, Link, useLoaderData, useParams } from 'react-router-dom';
 import { Product } from '../../interfaces/product.interface';
-import { Suspense, useState } from 'react';
-import axios, { AxiosError } from 'axios';
-import { PREFIX } from '../../helpers/API';
+import { Suspense } from 'react';
 import Headling from '../../components/Headling/Headling';
 import Button from '../../components/Button/Button';
 import styles from './Product.module.css';
@@ -10,25 +8,10 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { cartActions } from '../../store/cart.slice';
 
-export function Product() {
-  const [product, setProduct] = useState<Product>();
-  const [error, setError] = useState<string | undefined>();
+export function ProductPage() {
   const productId = Number(useParams().id);
   const data = useLoaderData() as { data: Product };
   const dispatch = useDispatch<AppDispatch>();
-
-  const getProduct = async () => {
-    try {
-      const { data } = await axios.get<Product>(`${PREFIX}/products/${productId}`);
-      setProduct(data);
-    } catch (error) {
-      console.log(error);
-      if (error instanceof AxiosError) {
-        setError(error.message);
-      }
-      return;
-    }
-  };
 
   const add = (e: MouseEvent) => {
     e.preventDefault();
@@ -42,7 +25,7 @@ export function Product() {
           {({ data }: { data: Product }) => (
             <>
               <div className={styles['line']}>
-                <Link className={styles['back-link']} to='/'>
+                <Link className={styles['back-link']} to='/' title='Назад'>
                   <img src='/arrow-back-icon.svg' width='25px' height='25px' alt='' />
                 </Link>
                 <Headling>{data.name}</Headling>
@@ -68,8 +51,8 @@ export function Product() {
                   <div className={styles['ingredients']}>
                     Состав:
                     <ul>
-                      {data.ingredients.map((ingredient) => (
-                        <li>{ingredient}</li>
+                      {data.ingredients.map((ingredient, index) => (
+                        <li key={index}>{ingredient}</li>
                       ))}
                     </ul>
                   </div>
