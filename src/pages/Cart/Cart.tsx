@@ -16,7 +16,7 @@ const DELIVERY_FEE = 169;
 export function Cart() {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const items = useSelector((state: RootState) => state.cart.items);
-  const userId = useSelector((state: RootState) => state.user.id);
+  const jwt = useSelector((s: RootState) => s.user.jwt);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -31,10 +31,17 @@ export function Cart() {
   };
 
   const checkout = async () => {
-    await axios.post(`${PREFIX}/order`, {
-      userId: userId,
-      products: items,
-    });
+    await axios.post(
+      `${PREFIX}/order`,
+      {
+        products: items,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
     dispatch(cartActions.clean());
     navigate('/success');
   };
