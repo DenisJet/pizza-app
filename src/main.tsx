@@ -61,7 +61,7 @@ const router = createBrowserRouter(
     { path: '*', element: <ErrorPage /> },
   ],
   {
-    basename: 'https://denis-pizza-app.netlify.app/',
+    basename: 'https://denis-pizza-app.netlify.app',
   }
 );
 
