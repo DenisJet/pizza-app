@@ -41,18 +41,6 @@ const router = createBrowserRouter([
         path: '/product/:id',
         element: <ProductPage />,
         errorElement: <>Ошибка загрузки</>,
-        // loader: async ({ params }) => {
-        //   return defer({
-        //     data: new Promise((resolve, reject) => {
-        //       setTimeout(() => {
-        //         axios
-        //           .get(`${PREFIX}/products/${params.id}`)
-        //           .then((data) => resolve(data))
-        //           .catch((e) => reject(e));
-        //       }, 2000);
-        //     }),
-        //   });
-
         loader: async ({ params }) => {
           return defer({
             data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
