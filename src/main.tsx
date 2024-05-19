@@ -44,9 +44,21 @@ const router = createBrowserRouter(
           errorElement: <>Ошибка загрузки</>,
           loader: async ({ params }) => {
             return defer({
-              data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
+              data: new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  axios
+                    .get(`${PREFIX}/products/${params.id}`)
+                    .then((data) => resolve(data))
+                    .catch((e) => reject(e));
+                }, 1000);
+              }),
             });
           },
+          // loader: async ({ params }) => {
+          //   return defer({
+          //     data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
+          //   });
+          // },
         },
       ],
     },
@@ -59,10 +71,10 @@ const router = createBrowserRouter(
       ],
     },
     { path: '*', element: <ErrorPage /> },
-  ],
-  {
-    basename: 'https://denis-pizza-app.netlify.app',
-  }
+  ]
+  // {
+  //   basename: 'https://denis-pizza-app.netlify.app',
+  // }
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
