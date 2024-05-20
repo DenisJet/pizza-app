@@ -18,64 +18,59 @@ import { Success } from './pages/Success/Success.tsx';
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: (
-        <RequireAuth>
-          <Layout />
-        </RequireAuth>
-      ),
-      children: [
-        {
-          path: '/',
-          element: (
-            <Suspense fallback={<>Загрузка...</>}>
-              <Menu />
-            </Suspense>
-          ),
-        },
-        { path: '/success', element: <Success /> },
-        { path: '/cart', element: <Cart /> },
-        {
-          path: '/product/:id',
-          element: <ProductPage />,
-          errorElement: <>Ошибка загрузки</>,
-          loader: async ({ params }) => {
-            return defer({
-              data: new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  axios
-                    .get(`${PREFIX}/products/${params.id}`)
-                    .then((data) => resolve(data))
-                    .catch((e) => reject(e));
-                }, 1000);
-              }),
-            });
-          },
-          // loader: async ({ params }) => {
-          //   return defer({
-          //     data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
-          //   });
-          // },
-        },
-      ],
-    },
-    {
-      path: '/auth',
-      element: <AuthLayout />,
-      children: [
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
-      ],
-    },
-    { path: '*', element: <ErrorPage /> },
-  ],
+const router = createBrowserRouter([
   {
-    basename: 'https://denis-pizza-app.netlify.app',
-  }
-);
+    path: '/',
+    element: (
+      <RequireAuth>
+        <Layout />
+      </RequireAuth>
+    ),
+    children: [
+      {
+        path: '/',
+        element: (
+          <Suspense fallback={<>Загрузка...</>}>
+            <Menu />
+          </Suspense>
+        ),
+      },
+      { path: '/success', element: <Success /> },
+      { path: '/cart', element: <Cart /> },
+      {
+        path: '/product/:id',
+        element: <ProductPage />,
+        errorElement: <>Ошибка загрузки</>,
+        loader: async ({ params }) => {
+          return defer({
+            data: new Promise((resolve, reject) => {
+              setTimeout(() => {
+                axios
+                  .get(`${PREFIX}/products/${params.id}`)
+                  .then((data) => resolve(data))
+                  .catch((e) => reject(e));
+              }, 1000);
+            }),
+          });
+        },
+        // loader: async ({ params }) => {
+        //   return defer({
+        //     data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
+        //   });
+        // },
+      },
+    ],
+  },
+  {
+    path: '/auth',
+    element: <AuthLayout />,
+    children: [
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+    ],
+  },
+  { path: '*', element: <ErrorPage /> },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
