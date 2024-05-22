@@ -41,7 +41,7 @@ const router = createBrowserRouter(
         {
           path: '/product/:id',
           element: <ProductPage />,
-          errorElement: <>Ошибка загрузки</>,
+          errorElement: <>Ошибка</>,
           loader: async ({ params }) => {
             return defer({
               data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
@@ -59,8 +59,8 @@ const router = createBrowserRouter(
       ],
     },
     { path: '*', element: <ErrorPage /> },
-  ]
-  //{ basename: '/pizza-app/' }
+  ],
+  { basename: '/pizza-app/' }
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

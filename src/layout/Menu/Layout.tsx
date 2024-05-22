@@ -26,7 +26,7 @@ export function Layout() {
     <div className={styles['layout']}>
       <div className={styles['sidebar']}>
         <div className={styles['user']}>
-          <img className={styles['avatar']} src='/avatar.png' alt='Аватар пользователя' />
+          <img className={styles['avatar']} src='/pizza-app/avatar.png' alt='Аватар пользователя' />
           <div className={styles['name']}>{profile?.name}</div>
           <div className={styles['email']}>{profile?.email}</div>
         </div>
@@ -39,7 +39,7 @@ export function Layout() {
             }
             to='/'
           >
-            <img src='/menu-icon.svg' alt='Иконка меню' />
+            <img src='/pizza-app/menu-icon.svg' alt='Иконка меню' />
             Меню
           </NavLink>
           <NavLink
@@ -50,13 +50,13 @@ export function Layout() {
             }
             to='/cart'
           >
-            <img src='/cart-icon.svg' alt='Иконка корзины' />
+            <img src='/pizza-app/cart-icon.svg' alt='Иконка корзины' />
             Корзина
             <span className={styles['cart-count']}>{items.reduce((acc, item) => (acc += item.count), 0)}</span>
           </NavLink>
         </div>
         <Button className={styles['exit']} onClick={logout}>
-          <img src='/exit-icon.svg' alt='Иконка выхода' />
+          <img src='/pizza-app/exit-icon.svg' alt='Иконка выхода' />
           Выход
         </Button>
       </div>
