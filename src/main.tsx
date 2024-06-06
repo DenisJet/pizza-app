@@ -16,7 +16,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import { Success } from './pages/Success/Success.tsx';
 
-const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
+const Menu = lazy(() => import('./pages/Menu/Menu'));
 
 const router = createBrowserRouter([
   {
@@ -35,8 +35,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      { path: '/success', element: <Success /> },
-      { path: '/cart', element: <Cart /> },
+      {
+        path: '/success',
+        element: <Success />,
+      },
+      {
+        path: '/cart',
+        element: <Cart />,
+      },
       {
         path: '/product/:id',
         element: <ProductPage />,
@@ -53,11 +59,20 @@ const router = createBrowserRouter([
     path: '/auth',
     element: <AuthLayout />,
     children: [
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
+      },
     ],
   },
-  { path: '*', element: <ErrorPage /> },
+  {
+    path: '*',
+    element: <ErrorPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
