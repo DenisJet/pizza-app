@@ -18,50 +18,47 @@ import { Success } from './pages/Success/Success.tsx';
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: (
-        <RequireAuth>
-          <Layout />
-        </RequireAuth>
-      ),
-      children: [
-        {
-          path: '/',
-          element: (
-            <Suspense fallback={<>Загрузка...</>}>
-              <Menu />
-            </Suspense>
-          ),
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <RequireAuth>
+        <Layout />
+      </RequireAuth>
+    ),
+    children: [
+      {
+        path: '/',
+        element: (
+          <Suspense fallback={<>Загрузка...</>}>
+            <Menu />
+          </Suspense>
+        ),
+      },
+      { path: '/success', element: <Success /> },
+      { path: '/cart', element: <Cart /> },
+      {
+        path: '/product/:id',
+        element: <ProductPage />,
+        errorElement: <>Ошибка</>,
+        loader: async ({ params }) => {
+          return defer({
+            data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
+          });
         },
-        { path: '/success', element: <Success /> },
-        { path: '/cart', element: <Cart /> },
-        {
-          path: '/product/:id',
-          element: <ProductPage />,
-          errorElement: <>Ошибка</>,
-          loader: async ({ params }) => {
-            return defer({
-              data: axios.get(`${PREFIX}/products/${params.id}`).then((data) => data),
-            });
-          },
-        },
-      ],
-    },
-    {
-      path: '/auth',
-      element: <AuthLayout />,
-      children: [
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
-      ],
-    },
-    { path: '*', element: <ErrorPage /> },
-  ],
-  { basename: '/pizza-app/' }
-);
+      },
+    ],
+  },
+  {
+    path: '/auth',
+    element: <AuthLayout />,
+    children: [
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+    ],
+  },
+  { path: '*', element: <ErrorPage /> },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -22,11 +22,11 @@ function ProductCard(props: ProductCardProps) {
             <span className={styles['currency']}>₽</span>
           </div>
           <button className={styles['add-to-cart']} onClick={add} type='button'>
-            <img src='/pizza-app/cart-button-icon.svg' alt='Добавить в корзину' />
+            <img src='/cart-button-icon.svg' alt='Добавить в корзину' />
           </button>
           <div className={styles['rating']}>
             {props.rating}&nbsp;
-            <img src='/pizza-app/star-icon.svg' alt='Иконка звезды' />
+            <img src='/star-icon.svg' alt='Иконка звезды' />
           </div>
         </div>
         <div className={styles['footer']}>

@@ -26,11 +26,11 @@ export function ProductPage() {
             <>
               <div className={styles['line']}>
                 <Link className={styles['back-link']} to='/' title='Назад'>
-                  <img src='/pizza-app/arrow-back-icon.svg' width='25px' height='25px' alt='' />
+                  <img src='/arrow-back-icon.svg' width='25px' height='25px' alt='' />
                 </Link>
                 <Headling>{data.name}</Headling>
                 <Button className={styles['cart-button']} onClick={add}>
-                  <img src='/pizza-app/cart-button-icon.svg' alt='иконка корзины' />В корзину
+                  <img src='/cart-button-icon.svg' alt='иконка корзины' />В корзину
                 </Button>
               </div>
               <div className={styles['content']}>
@@ -45,7 +45,7 @@ export function ProductPage() {
                   <div className={styles['rating']}>
                     Рейтинг{' '}
                     <div className={styles['rate']}>
-                      {data.rating} <img src='/pizza-app/star-icon.svg' alt='иконка звезды' />
+                      {data.rating} <img src='/star-icon.svg' alt='иконка звезды' />
                     </div>
                   </div>
                   <div className={styles['ingredients']}>
